@@ -196,4 +196,16 @@ class Node {
         currentNode = currentNode.next;
       }
     }
+
+    length() {
+        let count = 0;
+        let currentNode = this.head;
+        while (currentNode != null) {
+            count++;
+            currentNode = currentNode.next;
+        }
+        return count;
+    }
   }
+
+  export default LinkedList;

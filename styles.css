@@ -1,0 +1,85 @@
+body{
+    background: linear-gradient(90deg, #4f347a, #7aa7de);
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto; /* Change from 100vh to auto or a fixed height */
+    padding: 20px 0;
+    
+}
+
+#heading{
+    font-size: 3rem;
+    color: #fff;
+    text-align: center;
+}
+
+#gameContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    background-color: rgb(249, 253, 253);
+    margin: 0 auto; /* This will center the game container horizontally */
+    padding: 20px;
+}
+.marble {
+    background-size: contain; /* This will ensure the image fits within the element's bounds */
+    background-repeat: no-repeat; /* This will prevent the image from repeating inside the element */
+    width: 50px; /* Set a fixed width */
+    height: 50px; /* Set a fixed height */
+    border-radius: 50%; /* This will make the div circular */
+    cursor: pointer; /* Indicate it's clickable */
+    /* Add margin or padding if you want to space them out more */
+}
+
+#cannon {
+    position: absolute; /* or absolute, depending on your layout */
+    bottom: 50px; /* adjust as needed */
+    left: 50%; /* centers the cannon horizontally */
+    transform: translateX(-50%); /* aligns the center of the div with the left position */
+}
+
+/* #cannon #nextMarble {
+     You might want to add specific styles for the cannonball marble */
+
+/* Add to your <style> tag or a separate CSS file */
+@keyframes fadeOutScaleDown {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+.fade-out-scale-down {
+    animation: fadeOutScaleDown 0.5s forwards; /* Adjust timing as needed */
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s forwards; /* Adjust timing as needed */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
