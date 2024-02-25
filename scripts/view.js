@@ -6,22 +6,17 @@ class View {
     }
 
     displayBalls(ballList) {
-        // Clear existing marbles
         this.gameContainer.innerHTML = '';
-    
-        // Iterate through the ballList and create an element for each
         ballList.forEach((ball, index) => {
             const marbleElement = document.createElement('div');
             marbleElement.classList.add('marble');
-            // Correct the path to match the number with the asset
             marbleElement.style.backgroundImage = `url('assets/marble${ball.number}.png')`;
-            marbleElement.addEventListener('click', () => this.controller.handleClickEvent(index)); // Fix the method name here
+            marbleElement.addEventListener('click', () => this.controller.handleClickEvent(index));
             this.gameContainer.appendChild(marbleElement);
         });
     }
 
     animateInsertion(index) {
-        // Ensure the element exists before trying to animate it
         const marbleElement = this.gameContainer.children[index];
         if (marbleElement) {
             marbleElement.classList.add('fade-in');
@@ -29,12 +24,10 @@ class View {
     }
 
     animateRemoval(indices) {
-        // Animate and remove each marble specified by indices
         indices.forEach(index => {
             const marbleElement = this.gameContainer.children[index];
             if (marbleElement) {
                 marbleElement.classList.add('fade-out-scale-down');
-                // Wait for animation to finish before removing the element
                 marbleElement.addEventListener('animationend', () => {
                     if (marbleElement && marbleElement.parentNode) {
                         marbleElement.parentNode.removeChild(marbleElement);
@@ -42,6 +35,51 @@ class View {
                 });
             }
         });
+    }
+
+    shootCannonBall(cannonBall, toIndex) {
+        const cannonBallElement = document.createElement('div');
+        cannonBallElement.classList.add('marble', 'cannon-ball');
+        cannonBallElement.style.backgroundImage = `url('assets/marble${cannonBall.number}.png')`;
+        this.gameContainer.appendChild(cannonBallElement);
+
+        // Trigger the shoot animation
+        // You'll need to adjust the `left` and `top` values according to your layout and animation needs
+        cannonBallElement.style.left = '50%'; // Example value
+        cannonBallElement.style.top = '50%'; // Example value
+        // Trigger animation with a class or directly with JS
+        
+        // After the animation, call the controller's method to insert the ball into the model
+        setTimeout(() => {
+            if (cannonBallElement) {
+                cannonBallElement.remove();
+            }
+            this.controller.insertBallAfterAnimation(toIndex);
+        }, 500); // Match this timeout to the duration of your shooting animation
+    }
+
+    explodeBalls(indices) {
+        indices.forEach(index => {
+            const marbleElement = this.gameContainer.children[index];
+            if (marbleElement) {
+                marbleElement.classList.add('explode');
+                marbleElement.addEventListener('animationend', () => {
+                    if (marbleElement && marbleElement.parentNode) {
+                        marbleElement.parentNode.removeChild(marbleElement);
+                    }
+                });
+            }
+        });
+    }
+
+    displayGameOver() {
+        const gameOverElement = document.createElement('div');
+        gameOverElement.classList.add('game-over');
+        gameOverElement.textContent = 'Game Over!';
+        document.body.appendChild(gameOverElement);
+
+        // Optionally, animate the game over message
+        gameOverElement.classList.add('fade-in');
     }
 }
 

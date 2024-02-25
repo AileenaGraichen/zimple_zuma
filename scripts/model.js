@@ -14,6 +14,8 @@ class ZumaModel {
         this.ballsList = new LinkedList(); // Use your LinkedList class for the game's ball chain
         this.cannonBall = null; // The ball to be inserted next
         this.generateCannonBall(); // Initialize the first cannon ball
+        this.maxBalls = 20; // Set the maximum number of balls allowed
+        this.gameOver = false;
     }
 
     generateCannonBall() {
@@ -48,35 +50,43 @@ class ZumaModel {
     checkForMatches(startIndex) {
         let currentNode = this.ballsList.nodeAt(startIndex);
         if (!currentNode) return;
-
-        let matches = [];
-        let colorToMatch = currentNode.data.color;
-
-        
-        let leftNode = currentNode;
-        while (leftNode.prev && leftNode.prev.data.color === colorToMatch) {
+    
+        let matches = [currentNode]; // Start with the current node
+        let numberToMatch = currentNode.data.number; // Should be number, not color
+    
+        // Check left side for matches
+        let leftNode = currentNode.prev;
+        while (leftNode && leftNode.data.number === numberToMatch) {
+            matches.unshift(leftNode); // Add to the beginning of matches
             leftNode = leftNode.prev;
-            matches.unshift(leftNode); 
         }
-
-        
-        let rightNode = currentNode;
-        matches.push(rightNode); 
-        while (rightNode.next && rightNode.next.data.color === colorToMatch) {
+    
+        // Check right side for matches
+        let rightNode = currentNode.next;
+        while (rightNode && rightNode.data.number === numberToMatch) {
+            matches.push(rightNode); // Add to the end of matches
             rightNode = rightNode.next;
-            matches.push(rightNode);
         }
-
+    
+        console.log(`Matches for number ${numberToMatch}:`, matches);
+    
         if (matches.length >= 3) {
             this.removeMatches(matches);
-            // Check adjacent positions for new matches if any nodes were removed
-            if (leftNode.prev) this.checkForNewMatches(this.ballsList.indexOf(leftNode.prev.data));
-            if (rightNode.next) this.checkForNewMatches(this.ballsList.indexOf(rightNode.next.data));
         }
     }
 
     checkForNewMatches(index) {
         this.checkForMatches(index);
+    }
+
+    checkForGameOver() {
+        if (this.ballsList.length() >= this.maxBalls) {
+            this.gameOver = true;
+            // Trigger a game-over action, such as showing a message
+            if (this.onGameOver) {
+                this.onGameOver();
+            }
+        }
     }
 
     removeMatches(matches) {
